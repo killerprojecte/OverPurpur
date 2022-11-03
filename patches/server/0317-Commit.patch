@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jim Anser <20071128jim@gmail.com>
+Date: Thu, 3 Nov 2022 09:38:50 +0000
+Subject: [PATCH] Commit
+
+
+diff --git a/src/main/java/net/minecraft/server/Main.java b/src/main/java/net/minecraft/server/Main.java
+index 127ac1b47eb248c37e175b954d51cc959edf3743..444693f4b27fa7e80d3099fd7ea3a6d28a2196a6 100644
+--- a/src/main/java/net/minecraft/server/Main.java
++++ b/src/main/java/net/minecraft/server/Main.java
+@@ -177,7 +177,7 @@ public class Main {
+             // Paper end - fix SPIGOT-5824
+             Services services = Services.create(new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY), file, userCacheFile, optionset); // Paper
+             // CraftBukkit start
+-            String s = (String) Optional.ofNullable((String) optionset.valueOf("world")).orElse(dedicatedserversettings.getProperties().levelName);
++            String s = (String) Optional.ofNullable((String) optionset.valueOf("world_nether")).orElse(dedicatedserversettings.getProperties().levelName + "_nether");
+             LevelStorageSource convertable = LevelStorageSource.createDefault(file.toPath());
+             LevelStorageSource.LevelStorageAccess convertable_conversionsession = convertable.createAccess(s, LevelStem.NETHER);
+             LevelSummary worldinfo = convertable_conversionsession.getSummary();
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 9ee229e29c0fff3913a42b55fe70553af7889900..1471a53c09711226a269359ab4e0d16ed717417d 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -469,7 +469,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             ResourceKey<LevelStem> dimensionKey = iregistry.getResourceKey(worldDimension).get();
+ 
+             ServerLevel world;
+-            int dimension = 0;
++            int dimension = -1;
+ 
+             if (dimensionKey == LevelStem.NETHER) {
+                 if (this.isNetherEnabled()) {
+@@ -489,7 +489,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+             String worldType = (dimension == -999) ? dimensionKey.location().getNamespace() + "_" + dimensionKey.location().getPath() : org.bukkit.World.Environment.getEnvironment(dimension).toString().toLowerCase();
+             String name = (dimensionKey == LevelStem.OVERWORLD) ? s : s + "_" + worldType;
+-            if (dimension != 0) {
++            if (dimension != -1) {
+                 File newWorld = LevelStorageSource.getStorageFolder(new File(name).toPath(), dimensionKey).toFile();
+                 File oldWorld = LevelStorageSource.getStorageFolder(new File(s).toPath(), dimensionKey).toFile();
+                 File oldLevelDat = new File(new File(s), "level.dat"); // The data folders exist on first run as they are created in the PersistentCollection constructor above, but the level.dat won't
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 91c61b881bb1387072b6788ef3eddc035d34fa3a..dc62dbcb97b49d1dea029d3a9802a81c106669f3 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -2124,7 +2124,7 @@ public final class CraftServer implements Server {
+ 
+     @Override
+     public File getWorldContainer() {
+-        return this.getServer().storageSource.getDimensionPath(net.minecraft.world.level.Level.NETHER).getParent().toFile();
++        return this.getServer().storageSource.getDimensionPath(net.minecraft.world.level.Level.OVERWORLD).getParent().toFile();
+     }
+ 
+     @Override
