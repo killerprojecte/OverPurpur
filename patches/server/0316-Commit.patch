@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jim Anser <20071128jim@gmail.com>
+Date: Thu, 3 Nov 2022 09:21:56 +0000
+Subject: [PATCH] Commit
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 1471a53c09711226a269359ab4e0d16ed717417d..9ee229e29c0fff3913a42b55fe70553af7889900 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -469,7 +469,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             ResourceKey<LevelStem> dimensionKey = iregistry.getResourceKey(worldDimension).get();
+ 
+             ServerLevel world;
+-            int dimension = -1;
++            int dimension = 0;
+ 
+             if (dimensionKey == LevelStem.NETHER) {
+                 if (this.isNetherEnabled()) {
+@@ -489,7 +489,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+             String worldType = (dimension == -999) ? dimensionKey.location().getNamespace() + "_" + dimensionKey.location().getPath() : org.bukkit.World.Environment.getEnvironment(dimension).toString().toLowerCase();
+             String name = (dimensionKey == LevelStem.OVERWORLD) ? s : s + "_" + worldType;
+-            if (dimension != -1) {
++            if (dimension != 0) {
+                 File newWorld = LevelStorageSource.getStorageFolder(new File(name).toPath(), dimensionKey).toFile();
+                 File oldWorld = LevelStorageSource.getStorageFolder(new File(s).toPath(), dimensionKey).toFile();
+                 File oldLevelDat = new File(new File(s), "level.dat"); // The data folders exist on first run as they are created in the PersistentCollection constructor above, but the level.dat won't
