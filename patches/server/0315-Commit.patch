@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jim Anser <20071128jim@gmail.com>
+Date: Thu, 3 Nov 2022 09:05:18 +0000
+Subject: [PATCH] Commit
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index eb4f5917140cbc914fbc26960f388dd4411c05cc..1471a53c09711226a269359ab4e0d16ed717417d 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -488,7 +488,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             }
+ 
+             String worldType = (dimension == -999) ? dimensionKey.location().getNamespace() + "_" + dimensionKey.location().getPath() : org.bukkit.World.Environment.getEnvironment(dimension).toString().toLowerCase();
+-            String name = (dimensionKey == LevelStem.NETHER) ? s : s + "_" + worldType;
++            String name = (dimensionKey == LevelStem.OVERWORLD) ? s : s + "_" + worldType;
+             if (dimension != -1) {
+                 File newWorld = LevelStorageSource.getStorageFolder(new File(name).toPath(), dimensionKey).toFile();
+                 File oldWorld = LevelStorageSource.getStorageFolder(new File(s).toPath(), dimensionKey).toFile();
+@@ -583,8 +583,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             // Paper end - fix and optimise world upgrading
+             ResourceKey<Level> worldKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, dimensionKey.location());
+ 
+-            if (dimensionKey == LevelStem.NETHER) {
+-                LOGGER.info("Initing OverNether...");
++            if (dimensionKey == LevelStem.OVERWORLD) {
+                 this.worldData = worlddata;
+                 this.worldData.setGameType(((DedicatedServer) this).getProperties().gamemode); // From DedicatedServer.init
+ 
